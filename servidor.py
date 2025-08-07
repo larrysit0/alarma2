@@ -40,6 +40,22 @@ def static_files(filename):
     return send_from_directory(app.static_folder, filename)
 
 
+# 📍 Ubicaciones de una comunidad (¡BLOQUE AÑADIDO!)
+@app.route('/api/ubicaciones/<comunidad>')
+def ubicaciones_de_comunidad(comunidad):
+    path = os.path.join(COMUNIDADES_DIR, f"{comunidad}.json")
+    if not os.path.exists(path):
+        return jsonify({"error": "Comunidad no encontrada"}), 404
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Si la comunidad tiene formato extendido con "miembros" y "telegram_chat_id"
+    if isinstance(data, dict):
+        return jsonify(data.get("miembros", []))  # Enviar solo los miembros como ubicaciones
+    else:
+        return jsonify(data)
+
+
 def load_community_json(comunidad_nombre):
     print(f"--- DEBUG: Intentando cargar JSON para la comunidad: {comunidad_nombre} ---")
     filepath = os.path.join(COMUNIDADES_DIR, f"{comunidad_nombre.lower()}.json")
@@ -117,6 +133,6 @@ def send_telegram_message(chat_id, text, parse_mode='HTML'):
 
 # 💡 ESTA PARTE ES CLAVE PARA RAILWAY
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Usa el puerto que Railway asigna
+    port = int(os.environ.get("PORT", 5000))
     print(f"--- DEBUG: Iniciando servidor Flask en puerto {port} ---")
     app.run(host='0.0.0.0', port=port)
