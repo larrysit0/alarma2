@@ -32,7 +32,8 @@ def webhook():
             text = message.get('text', '')
             print(f"--- DEBUG: Mensaje procesado. chat_id: {chat_id}, texto: '{text}' ---")
             
-            if text.startswith('/registrar') or text.startswith('/obtener_id'):
+            # ✅ LÍNEA MODIFICADA: Ahora se busca el texto "MIREGISTRO" en mayúsculas
+            if text == 'MIREGISTRO':
                 print(f"--- DEBUG: Comando '{text}' detectado. Preparando respuesta... ---")
                 
                 # URL de tu web app de registro en Railway
@@ -83,7 +84,6 @@ def register_id():
         return jsonify({"error": "Error interno del servidor"}), 500
 
 def send_telegram_message(chat_id, payload):
-    # ✅ ESTA ES LA LÍNEA CORREGIDA
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     print(f"--- DEBUG: Intentando enviar mensaje a la URL: {url} ---")
     try:
