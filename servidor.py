@@ -83,7 +83,7 @@ def register_id():
         return jsonify({"error": "Error interno del servidor"}), 500
 
 def send_telegram_message(chat_id, payload):
-    # ✅ LÍNEA CORREGIDA: Se eliminó el espacio y el signo '=' extra.
+    # ✅ ESTA ES LA LÍNEA CORREGIDA
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     print(f"--- DEBUG: Intentando enviar mensaje a la URL: {url} ---")
     try:
